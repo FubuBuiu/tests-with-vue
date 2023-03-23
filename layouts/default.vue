@@ -40,7 +40,7 @@
         </v-container>
       </v-row>
       <v-row>
-        <v-container class="blue lighten-5">
+        <v-container class="blue lighten-5" fluid>
           <v-row justify="center">
             <v-col
               align="left"
@@ -59,6 +59,11 @@
             </v-col>
           </v-row>
         </v-container>
+      </v-row>
+    </v-container>
+    <v-container fluid>
+      <v-row class="ma-0 pa-0" justify="start">
+        <Product-Card />
       </v-row>
     </v-container>
   </v-app>
