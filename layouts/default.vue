@@ -12,7 +12,7 @@
           <h2>Brand</h2>
         </v-col>
         <v-col align="right" cols="3">
-          <v-btn elevation="0" icon>
+          <v-btn elevation="0" icon @click="toggleDrawer()">
             <v-icon class="pa-0 ma-0">mdi-cart-outline</v-icon>
           </v-btn>
         </v-col>
@@ -31,7 +31,6 @@
       <v-row justify="center">
         <v-container class="ma-0 pa-0 mt-3" style="width: 500px">
           <v-text-field
-            v-model="ee"
             outlined
             dense
             prepend-inner-icon="mdi-magnify"
@@ -61,6 +60,14 @@
         </v-container>
       </v-row>
     </v-container>
+    <Cart-Side-Menu
+      ref="cart_side_menu"
+      v-model="cartIsVisible"
+      v-click-outside="{
+        handler: toggleDrawer,
+        closeConditional: onCloseConditional,
+      }"
+    />
     <v-container fluid>
       <v-row class="ma-0 pa-0" justify="start">
         <Product-Card />
@@ -71,5 +78,30 @@
 
 <script lang="ts">
 import Vue from 'vue'
-export default Vue.extend({})
+
+export interface RefInterface extends Vue {
+  isActive: boolean
+}
+
+export default Vue.extend({
+  data() {
+    return {
+      cartIsVisible: false as boolean,
+      clickOutsideEnabled: false as boolean,
+    }
+  },
+  watch: {
+    cartIsVisible(val) {
+      this.clickOutsideEnabled = val
+    },
+  },
+  methods: {
+    toggleDrawer() {
+      this.cartIsVisible = !this.cartIsVisible
+    },
+    onCloseConditional() {
+      return this.clickOutsideEnabled
+    },
+  },
+})
 </script>
