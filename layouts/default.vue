@@ -61,12 +61,13 @@
       </v-row>
     </v-container>
     <Cart-Side-Menu
-      ref="cart_side_menu"
       v-model="cartIsVisible"
       v-click-outside="{
         handler: toggleDrawer,
         closeConditional: onCloseConditional,
       }"
+      width="350"
+      @close="toggleDrawer"
     />
     <v-container fluid>
       <v-row class="ma-0 pa-0" justify="start">
