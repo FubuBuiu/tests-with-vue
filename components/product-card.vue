@@ -1,13 +1,9 @@
 <template>
   <v-card>
-    <v-img
-      width="300px"
-      height="190px"
-      src="https://www.maxim.com/wp-content/uploads/2021/05/facebook-linked_image___spider-man-rj-skeletonized.jpg"
-    />
+    <v-img width="300px" height="190px" :src="productImage" />
     <v-card-title>
       <v-row>
-        <v-col> MIRANHA WATCH </v-col>
+        <v-col> {{ productTitle }} </v-col>
         <v-col cols="3" class="pa-0" align="right">
           <v-btn
             dense
@@ -22,13 +18,27 @@
         </v-col>
       </v-row>
     </v-card-title>
-    <v-card-subtitle> R$ 2.000.000,01 </v-card-subtitle>
+    <v-card-subtitle> $ {{ productPrice }} </v-card-subtitle>
   </v-card>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
+  props: {
+    productImage: {
+      type: String,
+      required: true,
+    },
+    productTitle: {
+      type: String,
+      required: true,
+    },
+    productPrice: {
+      type: Number,
+      required: true,
+    },
+  },
   data() {
     return {}
   },

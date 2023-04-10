@@ -50,12 +50,25 @@
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
+  props: {
+    product: {
+      type: Object,
+      default: undefined,
+    },
+  },
   data() {
     return {
       itemName: undefined as string | undefined,
       itemPrice: 0,
-      itemQuantity: 0,
+      itemQuantity: 1,
       itemImage: undefined as string | undefined,
+    }
+  },
+  created() {
+    if (this.product !== undefined || Object.keys(this.product).length !== 0) {
+      this.itemName = this.product.title
+      this.itemPrice = this.product.price
+      this.itemImage = this.product.image
     }
   },
 })

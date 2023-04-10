@@ -1,5 +1,11 @@
 <template>
-  <v-navigation-drawer app right hide-overlay v-bind="$attrs">
+  <v-navigation-drawer
+    app
+    right
+    disable-resize-watcher
+    hide-overlay
+    v-bind="$attrs"
+  >
     <v-container class="pl-8 pr-4">
       <v-row class="pt-3 pb-3">
         <v-col align="left">
@@ -12,7 +18,16 @@
         </v-col>
       </v-row>
       <v-divider></v-divider>
-      <v-row class="mt-7 mb-2">
+      <v-row v-if="cartIsEmpty" class="ma-0 mt-5" justify="center">
+        Your cart is empty
+      </v-row>
+      <CartItem
+        v-for="item in listCartProducts"
+        v-else
+        :key="item.id"
+        :product="item"
+      />
+      <v-row class="mt-5 mb-2">
         <v-col align="left">
           <v-text-field
             dense
@@ -37,7 +52,22 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import CartItem from '@/components/cart-item.vue'
 export default Vue.extend({
+  components: {
+    CartItem,
+  },
+  props: {
+    listCartProducts: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  computed: {
+    cartIsEmpty(): boolean {
+      return this.listCartProducts.length === 0
+    },
+  },
   methods: {
     closeDrawer() {
       this.$emit('close')
