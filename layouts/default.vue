@@ -38,29 +38,8 @@
           />
         </v-container>
       </v-row>
-      <v-row>
-        <v-container class="blue lighten-5" fluid>
-          <v-row justify="center">
-            <v-col
-              align="left"
-              cols="6"
-              style="font-size: 18px; font-weight: 600; color: #97a3b0"
-            >
-              Brand
-            </v-col>
-            <v-col
-              cols="6"
-              align="right"
-              align-self="center"
-              style="font-weight: 400; font-size: 14px; color: #97a3b0"
-            >
-              All rights reserved
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-row>
     </v-container>
-    <Cart-Side-Menu
+    <CartSideMenu
       v-model="cartIsVisible"
       v-click-outside="{
         handler: toggleDrawer,
@@ -69,22 +48,36 @@
       width="350"
       @close="toggleDrawer"
     />
-    <v-container fluid>
-      <v-row class="ma-0 pa-0" justify="start">
-        <Product-Card />
+    <nuxt />
+    <v-footer class="mt-5" color="#E3F2FD">
+      <v-row class="pa-0 ma-0" justify="center">
+        <v-col
+          align="left"
+          cols="6"
+          style="font-size: 18px; font-weight: 600; color: #97a3b0"
+        >
+          Brand
+        </v-col>
+        <v-col
+          cols="6"
+          align="right"
+          align-self="center"
+          style="font-weight: 400; font-size: 14px; color: #97a3b0"
+        >
+          All rights reserved
+        </v-col>
       </v-row>
-    </v-container>
+    </v-footer>
   </v-app>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-
-export interface RefInterface extends Vue {
-  isActive: boolean
-}
-
+import CartSideMenu from '@/components/cart-side-menu.vue'
 export default Vue.extend({
+  components: {
+    CartSideMenu,
+  },
   data() {
     return {
       cartIsVisible: false as boolean,
