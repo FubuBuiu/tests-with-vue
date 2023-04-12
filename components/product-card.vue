@@ -1,9 +1,18 @@
 <template>
-  <v-card>
-    <v-img width="300px" height="190px" :src="productImage" />
-    <v-card-title>
+  <v-card max-width="300" min-width="300">
+    <v-img height="190" :src="productImage" />
+    <v-card-title class="">
       <v-row>
-        <v-col> {{ productTitle }} </v-col>
+        <v-col class="text-truncate">
+          <v-tooltip bottom>
+            <template #activator="{ on, attrs }">
+              <span v-bind="attrs" v-on="on">
+                {{ productTitle }}
+              </span>
+            </template>
+            <span>{{ productTitle }}</span>
+          </v-tooltip>
+        </v-col>
         <v-col cols="3" class="pa-0" align="right">
           <v-btn
             dense
@@ -23,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 export default Vue.extend({
   props: {
     productImage: {
@@ -35,12 +44,12 @@ export default Vue.extend({
       required: true,
     },
     productPrice: {
-      type: Number,
+      type: String,
       required: true,
     },
   },
   data() {
-    return {}
+    return {};
   },
-})
+});
 </script>
