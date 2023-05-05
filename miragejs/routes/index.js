@@ -2,7 +2,7 @@
  * Mirage JS guide on Routes: https://miragejs.com/docs/route-handlers/functions
  */
 
-import { Response } from 'miragejs';
+// import { Response } from 'miragejs';
 export default function routes() {
   this.namespace = 'api';
 
@@ -12,10 +12,13 @@ export default function routes() {
    * Mirage JS guide on Resource: https://miragejs.com/docs/route-handlers/shorthands#resource-helper
    */
   this.resource('users');
-  // this.resource('products');
-  this.get('products', () => {
-    return new Response(500, {}, 'O server morreu!');
-  });
+  this.resource('products');
+
+  // ---------Force api return error---------
+
+  // this.get('products', () => {
+  //   return new Response(500, {}, 'O server morreu!');
+  // });
 
   /*
    * From your component use fetch('api/messages?userId=<a user id>')
