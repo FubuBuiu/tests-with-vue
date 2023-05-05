@@ -51,8 +51,8 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import CartItem from '@/components/cart-item.vue'
+import Vue from 'vue';
+import CartItem from '@/components/cart-item.vue';
 export default Vue.extend({
   components: {
     CartItem,
@@ -65,13 +65,13 @@ export default Vue.extend({
   },
   computed: {
     cartIsEmpty(): boolean {
-      return this.listCartProducts.length === 0
+      return this.listCartProducts.length === 0;
     },
   },
   methods: {
     closeDrawer() {
-      this.$emit('close')
+      this.$emit('close');
     },
   },
-})
+});
 </script>

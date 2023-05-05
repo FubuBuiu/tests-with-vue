@@ -72,8 +72,8 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import CartSideMenu from '@/components/cart-side-menu.vue'
+import Vue from 'vue';
+import CartSideMenu from '@/components/cart-side-menu.vue';
 export default Vue.extend({
   components: {
     CartSideMenu,
@@ -82,20 +82,20 @@ export default Vue.extend({
     return {
       cartIsVisible: false as boolean,
       clickOutsideEnabled: false as boolean,
-    }
+    };
   },
   watch: {
     cartIsVisible(val) {
-      this.clickOutsideEnabled = val
+      this.clickOutsideEnabled = val;
     },
   },
   methods: {
     toggleDrawer() {
-      this.cartIsVisible = !this.cartIsVisible
+      this.cartIsVisible = !this.cartIsVisible;
     },
     onCloseConditional() {
-      return this.clickOutsideEnabled
+      return this.clickOutsideEnabled;
     },
   },
-})
+});
 </script>
