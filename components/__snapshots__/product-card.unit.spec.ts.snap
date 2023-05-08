@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProductCard component - unit should match snapshot 1`] = `
+<div
+  class="v-card v-sheet theme--light"
+  style="min-width: 300px; max-width: 300px;"
+>
+  <div
+    class="v-image v-responsive theme--light"
+    style="height: 190px;"
+  >
+    <transition-stub
+      mode="in-out"
+      name="fade-transition"
+    >
+      <div
+        class="v-image__image v-image__image--preload v-image__image--cover"
+        style="background-position: center center;"
+      />
+    </transition-stub>
+    <div
+      class="v-responsive__content"
+    />
+  </div>
+   
+  <div
+    class="v-card__title"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="text-truncate col"
+      >
+        <span
+          class="v-tooltip v-tooltip--bottom"
+        >
+          <!---->
+          <span
+            aria-expanded="false"
+            aria-haspopup="true"
+          >
+            
+              Relógio bonito
+            
+          </span>
+        </span>
+      </div>
+       
+      <div
+        align="right"
+        class="pa-0 col col-3"
+      >
+        <button
+          class="v-btn v-btn--is-elevated v-btn--fab v-btn--has-bg v-btn--round theme--light v-size--small blue"
+          dense=""
+          style="transform: translateY(-50%);"
+          type="button"
+        >
+          <span
+            class="v-btn__content"
+          >
+            <i
+              aria-hidden="true"
+              class="v-icon notranslate pa-0 ma-0 mdi mdi-cart-outline theme--light white--text"
+            />
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+   
+  <div
+    class="v-card__subtitle"
+  >
+     $ 45.00 
+  </div>
+</div>
+`;
