@@ -8,11 +8,7 @@
       </v-row>
       <v-row v-else class="ma-0 pa-0" justify="center">
         <v-col v-for="product in products" :key="product.id" cols="auto">
-          <ProductCard
-            :product-image="product.image"
-            :product-price="product.price"
-            :product-title="product.title"
-          />
+          <ProductCard :product="product" />
         </v-col>
       </v-row>
     </v-container>

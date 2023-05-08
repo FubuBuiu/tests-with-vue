@@ -1,16 +1,16 @@
 <template>
   <v-card max-width="300" min-width="300">
-    <v-img height="190" :src="productImage" />
+    <v-img height="190" :src="product.image" />
     <v-card-title class="">
       <v-row>
         <v-col class="text-truncate">
           <v-tooltip bottom>
             <template #activator="{ on, attrs }">
               <span v-bind="attrs" v-on="on">
-                {{ productTitle }}
+                {{ product.title }}
               </span>
             </template>
-            <span>{{ productTitle }}</span>
+            <span>{{ product.title }}</span>
           </v-tooltip>
         </v-col>
         <v-col cols="3" class="pa-0" align="right">
@@ -21,35 +21,31 @@
             small
             color="blue"
             style="transform: translateY(-50%)"
+            @click="addToCart"
           >
-            <v-icon color="white" class="pa-0 ma-0">mdi-cart-outline</v-icon>
+            <v-icon color="white" class="pa-0 ma-0"> mdi-cart-outline </v-icon>
           </v-btn>
         </v-col>
       </v-row>
     </v-card-title>
-    <v-card-subtitle> $ {{ productPrice }} </v-card-subtitle>
+    <v-card-subtitle> $ {{ product.price }} </v-card-subtitle>
   </v-card>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropOptions } from 'vue';
+import { Product } from '@/pages/index.vue';
 export default Vue.extend({
   props: {
-    productImage: {
-      type: String,
+    product: {
+      type: Object,
       required: true,
-    },
-    productTitle: {
-      type: String,
-      required: true,
-    },
-    productPrice: {
-      type: String,
-      required: true,
-    },
+    } as PropOptions<Product>,
   },
-  data() {
-    return {};
+  methods: {
+    addToCart() {
+      this.$emit('addToCart', { product: this.product });
+    },
   },
 });
 </script>
