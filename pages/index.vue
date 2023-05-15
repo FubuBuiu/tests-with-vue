@@ -1,6 +1,7 @@
 <template>
   <main>
     <v-container fluid class="pa-0">
+      <SearchField />
       <v-row v-if="errorMessage !== undefined" justify="center">
         <h3>
           {{ errorMessage }}
@@ -18,6 +19,7 @@
 <script lang='ts'>
 import Vue from 'vue';
 import ProductCard from '@/components/product-card.vue';
+import SearchField from '@/components/search-field.vue';
 
 export interface Product {
   id: string;
@@ -29,6 +31,7 @@ export interface Product {
 export default Vue.extend({
   components: {
     ProductCard,
+    SearchField,
   },
   data() {
     return {

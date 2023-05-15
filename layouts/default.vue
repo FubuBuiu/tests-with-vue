@@ -28,16 +28,6 @@
           <v-btn v-ripple="false" class="text-none" plain text>About</v-btn>
         </v-btn-toggle>
       </v-row>
-      <v-row justify="center">
-        <v-container class="ma-0 pa-0 mt-3" style="width: 500px">
-          <v-text-field
-            outlined
-            dense
-            prepend-inner-icon="mdi-magnify"
-            placeholder="Search"
-          />
-        </v-container>
-      </v-row>
     </v-container>
     <CartSideMenu
       v-model="cartIsVisible"
