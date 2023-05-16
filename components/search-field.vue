@@ -28,7 +28,7 @@ export default Vue.extend({
   },
   watch: {
     search() {
-      if (this.search === '' || this.search === undefined) {
+      if (this.search === '') {
         this.doSearch();
       }
     },
