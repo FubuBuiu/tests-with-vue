@@ -26,38 +26,39 @@ describe('ProductList - integration', () => {
   });
   afterEach(() => {
     server.shutdown();
+    jest.clearAllMocks();
   });
-  test('should mount the component', () => {
-    const wrapper = mount(ProductList, {
-      localVue,
-      vuetify,
-    });
-    expect(wrapper.vm);
-  });
-  test('should mount the Search component as a child', () => {
-    const wrapper = mount(ProductList, {
-      localVue,
-      vuetify,
-    });
-    expect(wrapper.findComponent(Search)).toBeDefined();
-  });
-  test('should call axios.get on component mount', () => {
-    mount(ProductList, {
-      mocks: {
-        $axios: axios,
-      },
-      localVue,
-      vuetify,
-    });
-    expect(axios.get).toHaveBeenCalledTimes(1);
-    expect(axios.get).toHaveBeenCalledWith('/api/products');
-  });
-  test('should mount the ProductCard component 10 times', async () => {
-    const products = server.createList('product', 10);
 
-    (axios.get as jest.Mock).mockReturnValue(
-      Promise.resolve({ data: { products } })
-    );
+  const getProducts = (quantity: number, overrides: Array<Object>) => {
+    let overridesList = [];
+
+    if (overrides.length > 0) {
+      overridesList = overrides.map((override) => {
+        return server.create('product', override);
+      });
+    }
+
+    const products = [
+      ...server.createList('product', quantity),
+      ...overridesList,
+    ];
+    return products;
+  };
+
+  const mountProductList = async (
+    quantity = 10,
+    overrides: Array<Object> = [],
+    shouldReject = false
+  ) => {
+    const products = getProducts(quantity, overrides);
+
+    if (shouldReject) {
+      (axios.get as jest.Mock).mockReturnValue(Promise.reject(new Error(' ')));
+    } else {
+      (axios.get as jest.Mock).mockReturnValue(
+        Promise.resolve({ data: { products } })
+      );
+    }
 
     const wrapper = mount(ProductList, {
       mocks: {
@@ -68,24 +69,66 @@ describe('ProductList - integration', () => {
     });
 
     await Vue.nextTick();
+
+    return { wrapper, products };
+  };
+
+  test('should mount the component', async () => {
+    const { wrapper } = await mountProductList();
+    expect(wrapper.vm);
+  });
+  test('should mount the Search component as a child', async () => {
+    const { wrapper } = await mountProductList();
+    expect(wrapper.findComponent(Search)).toBeDefined();
+  });
+  test('should call axios.get on component mount', async () => {
+    await mountProductList();
+    expect(axios.get).toHaveBeenCalledTimes(1);
+    expect(axios.get).toHaveBeenCalledWith('/api/products');
+  });
+  test('should mount the ProductCard component 10 times', async () => {
+    const { wrapper } = await mountProductList();
 
     const cards = wrapper.findAllComponents(ProductCard);
 
     expect(cards).toHaveLength(10);
   });
   test('should display the error message when Promises rejects', async () => {
-    (axios.get as jest.Mock).mockReturnValue(Promise.reject(new Error(' ')));
-
-    const wrapper = mount(ProductList, {
-      mocks: {
-        $axios: axios,
-      },
-      localVue,
-      vuetify,
-    });
-
-    await Vue.nextTick();
+    const { wrapper } = await mountProductList(undefined, undefined, true);
 
     expect(wrapper.text()).toContain('Error getting product list');
+  });
+  test('should filter the product list when a search is performed', async () => {
+    // Arange
+    const { wrapper } = await mountProductList(10, [
+      { title: 'Meu relógio amado' },
+      { title: 'Meu outro relógio estimado' },
+    ]);
+
+    // Act
+    const search = wrapper.findComponent(Search);
+    search.find('[id="search-input"]').setValue('relógio');
+    await search.find('form').trigger('submit');
+    // Assert
+    const cards = wrapper.findAllComponents(ProductCard);
+    expect(wrapper.vm.$data.searchTerm).toEqual('relógio');
+    expect(cards).toHaveLength(2);
+  });
+  test('should filter the product list when a search is performed', async () => {
+    // Arange
+    const { wrapper } = await mountProductList(10, [
+      { title: 'Meu relógio amado' },
+    ]);
+
+    // Act
+    const search = wrapper.findComponent(Search);
+    search.find('[id="search-input"]').setValue('relógio');
+    await search.find('form').trigger('submit');
+    search.find('[id="search-input"]').setValue('');
+    await search.find('form').trigger('submit');
+    // Assert
+    const cards = wrapper.findAllComponents(ProductCard);
+    expect(wrapper.vm.$data.searchTerm).toEqual('');
+    expect(cards).toHaveLength(11);
   });
 });
