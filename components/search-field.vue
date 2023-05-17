@@ -5,7 +5,7 @@
         <v-container class="ma-0 pa-0 mt-5" style="width: 500px">
           <v-text-field
             id="search-input"
-            v-model="search"
+            v-model="term"
             outlined
             dense
             prepend-inner-icon="mdi-magnify"
@@ -23,19 +23,19 @@ export default Vue.extend({
   data() {
     return {
       valid: true as boolean,
-      search: undefined as string | undefined,
+      term: undefined as string | undefined,
     };
   },
   watch: {
-    search() {
-      if (this.search === '') {
+    term() {
+      if (this.term === '') {
         this.doSearch();
       }
     },
   },
   methods: {
     doSearch() {
-      this.$emit('doSearch', { search: this.search });
+      this.$emit('doSearch', { term: this.term });
     },
   },
 });

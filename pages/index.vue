@@ -1,7 +1,7 @@
 <template>
   <main>
     <v-container fluid class="pa-0">
-      <SearchField />
+      <SearchField @doSearch="setSearchTerm" />
       <v-row v-if="errorMessage !== undefined" justify="center">
         <h3>
           {{ errorMessage }}
@@ -11,7 +11,7 @@
         <v-progress-circular indeterminate color="blue" />
       </v-row>
       <v-row v-else class="ma-0 pa-0" justify="center">
-        <v-col v-for="product in products" :key="product.id" cols="auto">
+        <v-col v-for="product in list" :key="product.id" cols="auto">
           <ProductCard :product="product" />
         </v-col>
       </v-row>
@@ -31,6 +31,10 @@ export interface Product {
   price: number;
 }
 
+export interface Search {
+  term: string;
+}
+
 export default Vue.extend({
   components: {
     ProductCard,
@@ -41,7 +45,18 @@ export default Vue.extend({
       loading: false as boolean,
       products: [] as Product[],
       errorMessage: undefined as string | undefined,
+      searchTerm: undefined as string | undefined,
     };
+  },
+  computed: {
+    list() {
+      if (this.searchTerm !== undefined && this.searchTerm !== '') {
+        return this.products.filter(({ title }) => {
+          return title.includes(this.searchTerm!);
+        });
+      }
+      return this.products;
+    },
   },
   async created() {
     try {
@@ -52,6 +67,11 @@ export default Vue.extend({
     } catch (error) {
       this.errorMessage = 'Error getting product list';
     }
+  },
+  methods: {
+    setSearchTerm(search: Search) {
+      this.searchTerm = search.term;
+    },
   },
 });
 </script>

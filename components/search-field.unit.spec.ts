@@ -27,26 +27,26 @@ describe('Search - unit', () => {
       localVue,
       vuetify,
     });
-    const search = 'termo para busca';
+    const term = 'termo para busca';
     const input = wrapper.getComponent(Search).find('[id="search-input"]');
-    await input.setValue(search);
+    await input.setValue(term);
     await wrapper.find('form').trigger('submit');
     expect(wrapper.emitted().doSearch).toBeTruthy();
     expect(wrapper.emitted().doSearch?.length).toBe(1);
-    expect(wrapper.emitted().doSearch![0]).toEqual([{ search }]);
+    expect(wrapper.emitted().doSearch![0]).toEqual([{ term }]);
   });
   test('should emit search event when search input is cleared', async () => {
     const wrapper = mount(Search, {
       localVue,
       vuetify,
     });
-    const search = 'termo para busca';
+    const term = 'termo para busca';
     const input = wrapper.getComponent(Search).find('[id="search-input"]');
-    await input.setValue(search);
+    await input.setValue(term);
     await input.setValue('');
 
     expect(wrapper.emitted().doSearch).toBeTruthy();
     expect(wrapper.emitted().doSearch?.length).toBe(1);
-    expect(wrapper.emitted().doSearch![0]).toEqual([{ search: '' }]);
+    expect(wrapper.emitted().doSearch![0]).toEqual([{ term: '' }]);
   });
 });
