@@ -2,7 +2,7 @@ import { mount, createLocalVue } from '@vue/test-utils';
 import axios from 'axios';
 import Vue from 'vue';
 import Vuetify from 'vuetify';
-import ProductList from './index.vue';
+import ProductList from '@/pages/index.vue';
 import { makeServer } from '~/miragejs/server';
 import ProductCard from '@/components/product-card.vue';
 import Search from '@/components/search-field.vue';
