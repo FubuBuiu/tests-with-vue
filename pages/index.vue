@@ -23,13 +23,14 @@
 import Vue from 'vue';
 import ProductCard from '@/components/product-card.vue';
 import SearchField from '@/components/search-field.vue';
+import { Product } from '@/state/index';
 
-export interface Product {
-  id: string;
-  title: string;
-  image: string;
-  price: number;
-}
+// export interface Product {
+//   id: string;
+//   title: string;
+//   image: string;
+//   price: number;
+// }
 
 export interface Search {
   term: string;
@@ -62,10 +63,11 @@ export default Vue.extend({
     try {
       this.loading = true;
       this.products = (await this.$axios.get('/api/products')).data.products;
-      this.loading = false;
       this.errorMessage = undefined;
     } catch (error) {
       this.errorMessage = 'Error getting product list';
+    } finally {
+      this.loading = false;
     }
   },
   methods: {

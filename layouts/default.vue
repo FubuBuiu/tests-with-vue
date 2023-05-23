@@ -12,7 +12,12 @@
           <h2>Brand</h2>
         </v-col>
         <v-col align="right" cols="3">
-          <v-btn elevation="0" icon @click="toggleDrawer()">
+          <v-btn
+            data-testid="cartButton"
+            elevation="0"
+            icon
+            @click="toggleDrawer()"
+          >
             <v-icon class="pa-0 ma-0">mdi-cart-outline</v-icon>
           </v-btn>
         </v-col>
@@ -36,6 +41,7 @@
         closeConditional: onCloseConditional,
       }"
       width="350"
+      :product-list="productList"
       @close="toggleDrawer"
     />
     <nuxt />
@@ -64,27 +70,26 @@
 <script lang="ts">
 import Vue from 'vue';
 import CartSideMenu from '@/components/cart-side-menu.vue';
+import { cartState, Product } from '@/state';
 export default Vue.extend({
+  name: 'Default',
   components: {
     CartSideMenu,
   },
-  data() {
-    return {
-      cartIsVisible: false as boolean,
-      clickOutsideEnabled: false as boolean,
-    };
-  },
-  watch: {
-    cartIsVisible(val) {
-      this.clickOutsideEnabled = val;
+  computed: {
+    cartIsVisible(): boolean {
+      return cartState.isShow;
+    },
+    productList(): Array<Product> {
+      return cartState.productList;
     },
   },
   methods: {
     toggleDrawer() {
-      this.cartIsVisible = !this.cartIsVisible;
+      cartState.isShow = !cartState.isShow;
     },
     onCloseConditional() {
-      return this.clickOutsideEnabled;
+      return cartState.isShow;
     },
   },
 });

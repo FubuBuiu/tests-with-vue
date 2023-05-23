@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import Vue, { PropOptions } from 'vue';
-import { Product } from '@/pages/index.vue';
+import { Product, cartState } from '@/state';
 export default Vue.extend({
   props: {
     product: {
@@ -44,7 +44,8 @@ export default Vue.extend({
   },
   methods: {
     addToCart() {
-      this.$emit('addToCart', { product: this.product });
+      cartState.isShow = true;
+      cartState.productList.push(this.product);
     },
   },
 });

@@ -12,37 +12,29 @@
           <h2>Your cart</h2>
         </v-col>
         <v-col align="right">
-          <v-btn icon @click="closeDrawer">
+          <v-btn data-testid="closeButton" icon @click="closeDrawer">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-col>
       </v-row>
       <v-divider></v-divider>
       <v-row v-if="cartIsEmpty" class="ma-0 mt-5" justify="center">
-        Your cart is empty
+        Cart is empty
       </v-row>
       <CartItem
-        v-for="item in listCartProducts"
+        v-for="(product, index) in cartProductList"
         v-else
-        :key="item.id"
-        :product="item"
+        :key="product.id"
+        :product="product"
+        @remove="removeProductFromCart(index)"
       />
-      <v-row class="mt-5 mb-2">
-        <v-col align="left">
-          <v-text-field
-            dense
-            flat
-            solo
-            hide-details="auto"
-            color="blue"
-            placeholder="Add promocode"
-          />
-        </v-col>
-        <v-col align="right">
-          <v-btn class="white--text" elevation="0" color="#42A5F5">apply</v-btn>
-        </v-col>
-      </v-row>
-      <v-btn block class="white--text" elevation="0" color="#42A5F5">
+      <v-btn
+        data-testid="checkoutButton"
+        block
+        class="white--text"
+        elevation="0"
+        color="#42A5F5"
+      >
         CHECKOUT
         <v-icon>mdi-arrow-right-thin</v-icon>
       </v-btn>
@@ -51,26 +43,38 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropOptions } from 'vue';
 import CartItem from '@/components/cart-item.vue';
+import { Product } from '~/state';
 export default Vue.extend({
   components: {
     CartItem,
   },
   props: {
-    listCartProducts: {
+    productList: {
       type: Array,
       default: () => [],
-    },
+    } as PropOptions<Array<Product>>,
+  },
+  data() {
+    return {
+      cartProductList: [] as Product[],
+    };
   },
   computed: {
     cartIsEmpty(): boolean {
-      return this.listCartProducts.length === 0;
+      return this.cartProductList.length === 0;
     },
+  },
+  created() {
+    this.cartProductList = this.productList;
   },
   methods: {
     closeDrawer() {
       this.$emit('close');
+    },
+    removeProductFromCart(index: number) {
+      this.cartProductList.splice(index, 1);
     },
   },
 });
