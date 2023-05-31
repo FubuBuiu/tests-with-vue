@@ -23,14 +23,7 @@
 import Vue from 'vue';
 import ProductCard from '@/components/product-card.vue';
 import SearchField from '@/components/search-field.vue';
-import { Product } from '@/state/index';
-
-// export interface Product {
-//   id: string;
-//   title: string;
-//   image: string;
-//   price: number;
-// }
+import { GlobalTypes } from '@/types/global-types';
 
 export interface Search {
   term: string;
@@ -44,7 +37,7 @@ export default Vue.extend({
   data() {
     return {
       loading: false as boolean,
-      products: [] as Product[],
+      products: [] as GlobalTypes.Product[],
       errorMessage: undefined as string | undefined,
       searchTerm: undefined as string | undefined,
     };

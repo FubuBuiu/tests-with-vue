@@ -34,18 +34,19 @@
 
 <script lang="ts">
 import Vue, { PropOptions } from 'vue';
-import { Product, cartState } from '@/state';
+import { GlobalTypes } from '@/types/global-types';
+
 export default Vue.extend({
   props: {
     product: {
       type: Object,
       required: true,
-    } as PropOptions<Product>,
+    } as PropOptions<GlobalTypes.Product>,
   },
   methods: {
     addToCart() {
-      cartState.isShow = true;
-      cartState.productList.push(this.product);
+      this.$cart.open();
+      this.$cart.addProduct(this.product);
     },
   },
 });

@@ -70,7 +70,8 @@
 <script lang="ts">
 import Vue from 'vue';
 import CartSideMenu from '@/components/cart-side-menu.vue';
-import { cartState, Product } from '@/state';
+import { GlobalTypes } from '@/types/global-types';
+
 export default Vue.extend({
   name: 'Default',
   components: {
@@ -78,18 +79,22 @@ export default Vue.extend({
   },
   computed: {
     cartIsVisible(): boolean {
-      return cartState.isShow;
+      return this.$cart.getState().open;
     },
-    productList(): Array<Product> {
-      return cartState.productList;
+    productList(): Array<GlobalTypes.Product> {
+      return this.$cart.getState().productList;
     },
   },
   methods: {
     toggleDrawer() {
-      cartState.isShow = !cartState.isShow;
+      if (this.$cart.getState().open) {
+        this.$cart.close();
+      } else {
+        this.$cart.open();
+      }
     },
     onCloseConditional() {
-      return cartState.isShow;
+      return this.$cart.getState().open;
     },
   },
 });

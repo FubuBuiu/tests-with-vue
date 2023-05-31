@@ -53,13 +53,13 @@
 
 <script lang="ts">
 import Vue, { PropOptions } from 'vue';
-import { Product } from '@/state';
+import { GlobalTypes } from '@/types/global-types';
 export default Vue.extend({
   props: {
     product: {
       type: Object,
       required: true,
-    } as PropOptions<Product>,
+    } as PropOptions<GlobalTypes.Product>,
   },
   data() {
     return {

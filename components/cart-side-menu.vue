@@ -3,7 +3,7 @@
     app
     right
     disable-resize-watcher
-    hide-overlay
+    temporary
     v-bind="$attrs"
   >
     <v-container class="pl-8 pr-4">
@@ -45,7 +45,7 @@
 <script lang="ts">
 import Vue, { PropOptions } from 'vue';
 import CartItem from '@/components/cart-item.vue';
-import { Product } from '~/state';
+import { GlobalTypes } from '@/types/global-types';
 export default Vue.extend({
   components: {
     CartItem,
@@ -54,11 +54,11 @@ export default Vue.extend({
     productList: {
       type: Array,
       default: () => [],
-    } as PropOptions<Array<Product>>,
+    } as PropOptions<Array<GlobalTypes.Product>>,
   },
   data() {
     return {
-      cartProductList: [] as Product[],
+      cartProductList: [] as GlobalTypes.Product[],
     };
   },
   computed: {
