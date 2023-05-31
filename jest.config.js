@@ -12,5 +12,11 @@ module.exports = {
   },
   extensionsToTreatAsEsm: ['.ts', '.vue'],
   collectCoverage: false,
+  collectCoverageFrom: [
+    '<rootDir>/components/**/*.vue',
+    '<rootDir>/pages/**/*.vue',
+    '<rootDir>/layouts/**/*.vue',
+    '<rootDir>/managers/**/*.ts',
+  ],
   testEnvironment: 'jsdom',
 };
