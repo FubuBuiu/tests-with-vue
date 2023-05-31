@@ -1,7 +1,14 @@
 import Vue from 'vue';
-import { Product } from '@/state';
+import { GlobalTypes } from '@/types/global-types';
 
-interface CartProduct extends Product {
+export default {
+  install: (Vue: any) => {
+    // istanbul ignore next
+    Vue.prototype.$cart = new CartManager();
+  },
+};
+
+interface CartProduct extends GlobalTypes.Product {
   quantity: number;
 }
 
@@ -27,17 +34,15 @@ export class CartManager {
     return this.state;
   }
 
-  existProductInTheCart(product: Product): boolean {
-    // console.log('ID DO PRODUTO----', product.id);
+  getState() {
+    return this.state;
+  }
+
+  existProductInTheCart(product: GlobalTypes.Product): boolean {
     return !!this.state.productList.find(({ id }) => product.id === id);
   }
 
-  addProduct(product: Product) {
-    // console.log('PRODUTO----', product);
-    // console.log(
-    //   'PRODUTO EXISTO NA LISTA----',
-    //   this.existProductInTheCart(product)
-    // );
+  addProduct(product: GlobalTypes.Product) {
     if (!this.existProductInTheCart(product)) {
       const productAux = {
         ...product,

@@ -24,33 +24,41 @@ describe('CartManager', () => {
 
     expect(state.open).toBe(false);
   });
+  test('should return the state ', () => {
+    const product = server.create('product').attrs;
+
+    manager.open();
+    manager.addProduct(product);
+    const state = manager.getState();
+
+    expect(state).toEqual({
+      productList: [
+        {
+          ...product,
+          quantity: 1,
+        },
+      ],
+      open: true,
+    });
+  });
   test('should add product to the cart only once', () => {
-    const product = {
-      ...server.create('product'),
-      quantity: 1,
-    };
+    const product = server.create('product').attrs;
+
     const state = manager.addProduct(product);
 
     expect(state.productList).toHaveLength(1);
   });
   test('should remove product from the cart', () => {
-    const product = {
-      ...server.create('product'),
-      quantity: 1,
-    };
+    const product = server.create('product').attrs;
 
     const state = manager.addProduct(product);
     manager.removeProduct(product.id);
 
     expect(state.productList).toHaveLength(0);
   });
-  fit('should clear cart', () => {
-    const product1 = {
-      ...server.create('product').attrs,
-    };
-    const product2 = {
-      ...server.create('product').attrs,
-    };
+  test('should clear cart', () => {
+    const product1 = server.create('product').attrs;
+    const product2 = server.create('product').attrs;
 
     manager.addProduct(product1);
     manager.addProduct(product2);
@@ -62,20 +70,14 @@ describe('CartManager', () => {
     expect(manager.state.productList).toHaveLength(0);
   });
   test('should return true if cart is not empty', () => {
-    const product = {
-      ...server.create('product'),
-      quantity: 1,
-    };
+    const product = server.create('product');
 
     manager.addProduct(product);
 
     expect(manager.hasProduct()).toBe(true);
   });
   test('should return true if product is already in the cart', () => {
-    const product = {
-      ...server.create('product'),
-      quantity: 1,
-    };
+    const product = server.create('product').attrs;
 
     manager.addProduct(product);
 
