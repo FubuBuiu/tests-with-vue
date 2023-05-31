@@ -4,7 +4,8 @@ import Vuetify from 'vuetify';
 import CartSideMenu from '@/components/cart-side-menu.vue';
 import CartItem from '@/components/cart-item.vue';
 import DefaultLayout from '@/layouts/default.vue';
-import { makeServer } from '~/miragejs/server';
+import { makeServer } from '@/miragejs/server';
+import { CartManager } from '@/managers/CartManager';
 
 Vue.use(Vuetify);
 
@@ -39,12 +40,16 @@ describe('Cart', () => {
       localVue,
       vuetify,
       stubs: { Nuxt: true },
+      mocks: {
+        $cart: new CartManager(),
+      },
       computed: {
         cartIsVisible(): boolean {
           return false;
         },
       },
     });
+
     const cartMenu = wrapper.findComponent(CartSideMenu);
 
     expect(cartMenu.classes()).toContain('v-navigation-drawer--close');
@@ -53,6 +58,9 @@ describe('Cart', () => {
     const wrapper = mount(DefaultLayout, {
       localVue,
       vuetify,
+      mocks: {
+        $cart: new CartManager(),
+      },
       stubs: { Nuxt: true },
       computed: {
         cartIsVisible(): boolean {

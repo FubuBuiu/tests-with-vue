@@ -3,12 +3,12 @@ import Vue from 'vue';
 import Vuetify from 'vuetify';
 import ProductCard from '@/components/product-card.vue';
 import { makeServer } from '~/miragejs/server';
+import { CartManager } from '~/managers/CartManager';
 
 Vue.use(Vuetify);
 
 let localVue: any;
 let vuetify: any;
-
 let server: any;
 
 function mountProductCard() {
@@ -18,15 +18,24 @@ function mountProductCard() {
     title: 'Relógio bonito',
     price: '45.00',
   });
+
+  const cartManager = new CartManager();
+
+  const wrapper = mount(ProductCard, {
+    localVue,
+    vuetify,
+    stubs: { Nuxt: true },
+    mocks: {
+      $cart: cartManager,
+    },
+    propsData: {
+      product,
+    },
+  });
   return {
-    wrapper: mount(ProductCard, {
-      localVue,
-      vuetify,
-      propsData: {
-        product,
-      },
-    }),
+    wrapper,
     product,
+    cartManager,
   };
 }
 describe('ProductCard component - unit', () => {
@@ -52,13 +61,15 @@ describe('ProductCard component - unit', () => {
     expect(wrapper.text()).toContain('Relógio bonito');
     expect(wrapper.text()).toContain('45.00');
   });
-  test('should emit the event addToCart with product object when button gets clicked', async () => {
-    const { wrapper, product } = mountProductCard();
+  test('should add product to cart when button gets clicked', async () => {
+    const { wrapper, cartManager, product } = mountProductCard();
 
+    const spy1 = jest.spyOn(cartManager, 'open');
+    const spy2 = jest.spyOn(cartManager, 'addProduct');
     await wrapper.find('button').trigger('click');
 
-    expect(wrapper.emitted().addToCart).toBeTruthy();
-    expect(wrapper.emitted().addToCart?.length).toBe(1);
-    expect(wrapper.emitted().addToCart![0]).toEqual([{ product }]);
+    expect(spy1).toHaveBeenCalledTimes(1);
+    expect(spy2).toHaveBeenCalledTimes(1);
+    expect(spy2).toHaveBeenCalledWith(product);
   });
 });
