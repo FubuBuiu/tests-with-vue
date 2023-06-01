@@ -18,31 +18,47 @@
               </v-row>
             </v-card>
             <v-card-actions class="pa-0 ma-0 mt-3">
-              <v-btn
-                class="ma-0 mr-1"
-                x-small
-                icon
-                elevation="0"
-                outlined
-                plain
-                data-testid="minusButton"
-                @click="decreaseQuantity"
-              >
-                <v-icon color="black">mdi-minus</v-icon>
-              </v-btn>
-              {{ itemQuantity }}
-              <v-btn
-                class="ma-0 ml-1"
-                x-small
-                icon
-                elevation="0"
-                outlined
-                plain
-                data-testid="plusButton"
-                @click="increaseQuantity"
-              >
-                <v-icon color="black">mdi-plus</v-icon>
-              </v-btn>
+              <v-row class="pa-0 ma-0">
+                <v-col class="pa-0 ma-0">
+                  <v-btn
+                    class="ma-0 mr-1"
+                    x-small
+                    icon
+                    elevation="0"
+                    outlined
+                    plain
+                    data-testid="minusButton"
+                    @click="decreaseQuantity"
+                  >
+                    <v-icon color="black">mdi-minus</v-icon>
+                  </v-btn>
+                  {{ itemQuantity }}
+                  <v-btn
+                    class="ma-0 ml-1"
+                    x-small
+                    icon
+                    elevation="0"
+                    outlined
+                    plain
+                    data-testid="plusButton"
+                    @click="increaseQuantity"
+                  >
+                    <v-icon color="black">mdi-plus</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
+              <v-col class="pa-0 ma-0">
+                <v-btn
+                  class="ma-0 ml-1"
+                  x-small
+                  icon
+                  elevation="0"
+                  data-testid="removeProductButton"
+                  @click="removeProduct"
+                >
+                  <v-icon color="red">mdi-trash-can</v-icon>
+                </v-btn>
+              </v-col>
             </v-card-actions>
           </v-col>
         </v-row>
@@ -72,7 +88,7 @@ export default Vue.extend({
   watch: {
     itemQuantity() {
       if (this.itemQuantity === 0) {
-        this.$emit('remove');
+        this.removeProduct();
       }
     },
   },
@@ -91,6 +107,9 @@ export default Vue.extend({
       if (this.itemQuantity > 0) {
         this.itemQuantity--;
       }
+    },
+    removeProduct() {
+      this.$cart.removeProduct(this.product.id);
     },
   },
 });

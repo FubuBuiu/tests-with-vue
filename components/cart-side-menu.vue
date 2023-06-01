@@ -22,11 +22,10 @@
         Cart is empty
       </v-row>
       <CartItem
-        v-for="(product, index) in cartProductList"
+        v-for="product in cartProductList"
         v-else
         :key="product.id"
         :product="product"
-        @remove="removeProductFromCart(index)"
       />
       <v-btn
         data-testid="checkoutButton"
@@ -46,35 +45,25 @@
 import Vue, { PropOptions } from 'vue';
 import CartItem from '@/components/cart-item.vue';
 import { GlobalTypes } from '@/types/global-types';
+
 export default Vue.extend({
   components: {
     CartItem,
   },
   props: {
-    productList: {
+    cartProductList: {
       type: Array,
       default: () => [],
     } as PropOptions<Array<GlobalTypes.Product>>,
   },
-  data() {
-    return {
-      cartProductList: [] as GlobalTypes.Product[],
-    };
-  },
   computed: {
     cartIsEmpty(): boolean {
-      return this.cartProductList.length === 0;
+      return !this.$cart.hasProduct();
     },
-  },
-  created() {
-    this.cartProductList = this.productList;
   },
   methods: {
     closeDrawer() {
       this.$emit('close');
-    },
-    removeProductFromCart(index: number) {
-      this.cartProductList.splice(index, 1);
     },
   },
 });

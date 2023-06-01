@@ -41,7 +41,7 @@
         closeConditional: onCloseConditional,
       }"
       width="350"
-      :product-list="productList"
+      :cart-product-list="productList"
       @close="toggleDrawer"
     />
     <nuxt />
