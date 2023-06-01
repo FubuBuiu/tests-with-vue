@@ -27,7 +27,7 @@ describe('Default Layout', () => {
 
     expect(wrapper.findComponent(CartSideMenu).exists()).toBe(true);
   });
-  test('should toggle Cart visibility', () => {
+  test('should toggle Cart visibility', async () => {
     const wrapper = mount(DefaultLayout, {
       localVue,
       vuetify,
@@ -40,7 +40,7 @@ describe('Default Layout', () => {
     const buttons = wrapper.find('[data-testid="cartButton"]');
 
     expect((wrapper.vm as any).cartIsVisible).toBe(false);
-    buttons.trigger('click');
+    await buttons.trigger('click');
     expect((wrapper.vm as any).cartIsVisible).toBe(true);
   });
 });

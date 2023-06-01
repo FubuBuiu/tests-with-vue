@@ -43,6 +43,7 @@ export class CartManager {
   }
 
   addProduct(product: GlobalTypes.Product) {
+    // TODO Rever se realmente é necessário adicionar o atributo quantity quando adiciona um produto no carrinho
     if (!this.existProductInTheCart(product)) {
       const productAux = {
         ...product,
