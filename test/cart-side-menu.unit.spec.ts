@@ -12,23 +12,41 @@ Vue.use(Vuetify);
 let localVue: any;
 let vuetify: any;
 let server: any;
+let cartManager: CartManager;
+
+function mountCartSideMenu(quantityProducts = 0) {
+  for (let i = 1; i <= quantityProducts; i++) {
+    const product = server.create('product');
+    cartManager.addProduct(product);
+  }
+
+  const wrapper = mount(CartSideMenu, {
+    localVue,
+    vuetify,
+    mocks: { $cart: cartManager },
+  });
+
+  return { wrapper, cartManager };
+}
 
 describe('Cart', () => {
   beforeEach(() => {
+    cartManager = new CartManager();
     localVue = createLocalVue();
     vuetify = new Vuetify();
     server = makeServer({ environment: 'test' });
   });
   afterEach(() => {
+    cartManager.clearCart();
     server.shutdown();
   });
   test('should mount the component', () => {
-    const wrapper = mount(CartSideMenu, { localVue, vuetify });
+    const { wrapper } = mountCartSideMenu();
 
     expect(wrapper.vm).toBeDefined();
   });
   test('should emit close event button gets clicked', async () => {
-    const wrapper = mount(CartSideMenu, { localVue, vuetify });
+    const { wrapper } = mountCartSideMenu();
 
     await wrapper.find('[data-testid="closeButton"]').trigger('click');
 
@@ -36,13 +54,14 @@ describe('Cart', () => {
     expect(wrapper.emitted().close).toHaveLength(1);
   });
   test('should hide the cart when variable cartIsVisible is not true', () => {
+    // TODO Tenta encontrar outra forma de alterar o model do componente CartSideMenu
     const wrapper = mount(DefaultLayout, {
       localVue,
       vuetify,
-      stubs: { Nuxt: true },
       mocks: {
         $cart: new CartManager(),
       },
+      stubs: { Nuxt: true },
       computed: {
         cartIsVisible(): boolean {
           return false;
@@ -55,6 +74,7 @@ describe('Cart', () => {
     expect(cartMenu.classes()).toContain('v-navigation-drawer--close');
   });
   test('should display the cart when variable cartIsVisible is true', () => {
+    // TODO Tenta encontrar outra forma de alterar o model do componente CartSideMenu
     const wrapper = mount(DefaultLayout, {
       localVue,
       vuetify,
@@ -74,24 +94,32 @@ describe('Cart', () => {
     expect(cartMenu.classes()).toContain('v-navigation-drawer--open');
   });
   test('should display "Cart is empty" when there are no products', () => {
-    const wrapper = mount(CartSideMenu, {
-      localVue,
-      vuetify,
-    });
+    const { wrapper } = mountCartSideMenu();
 
     expect(wrapper.text()).toContain('Cart is empty');
   });
   test('should display 2 instances of CartItem when 2 products are provided', () => {
-    const productList = server.createList('product', 2);
-    const wrapper = mount(CartSideMenu, {
-      localVue,
-      vuetify,
-      propsData: {
-        productList,
-      },
-    });
+    const { wrapper } = mountCartSideMenu(2);
 
     expect(wrapper.findAllComponents(CartItem)).toHaveLength(2);
     expect(wrapper.text()).not.toContain('Cart is empty');
+  });
+  test('should display "Clear cart" button', () => {
+    const { wrapper } = mountCartSideMenu(2);
+
+    const clearCartButton = wrapper.find('[data-testid="clearCartButton"]');
+
+    expect(clearCartButton.exists()).toBe(true);
+  });
+  test('should clear cart when "CLEAR CART" button gets cliked', async () => {
+    const { wrapper, cartManager } = mountCartSideMenu(2);
+
+    const clearCartButton = wrapper.find('[data-testid="clearCartButton"]');
+    const spy = jest.spyOn(cartManager, 'clearCart');
+
+    expect(cartManager.getState().productList).toHaveLength(2);
+    await clearCartButton.trigger('click');
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(cartManager.getState().productList).toHaveLength(0);
   });
 });
