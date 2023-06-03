@@ -7,6 +7,16 @@
           {{ errorMessage }}
         </h3>
       </v-row>
+      <v-container fluid style="padding-left: 70px">
+        <v-row class="pa-0 ma-0" style="color: #424242">
+          <h2>Wrist Whatch</h2>
+        </v-row>
+        <v-row class="pa-0 ma-0" style="color: #757575">
+          <h4 data-testid="totalProductQuantity">
+            {{ totalProductQuantityLabel }}
+          </h4>
+        </v-row>
+      </v-container>
       <v-row v-if="loading" justify="center">
         <v-progress-circular indeterminate color="blue" />
       </v-row>
@@ -50,6 +60,15 @@ export default Vue.extend({
         });
       }
       return this.products;
+    },
+    totalProductQuantityLabel(): string {
+      let label: string;
+      if (this.list.length <= 1) {
+        label = `${this.list.length} Product`;
+      } else {
+        label = `${this.list.length} Products`;
+      }
+      return label;
     },
   },
   async created() {
