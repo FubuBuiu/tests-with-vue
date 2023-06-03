@@ -18,19 +18,28 @@
         </v-col>
       </v-row>
       <v-divider></v-divider>
-      <v-row v-if="cartIsEmpty" class="ma-0 mt-5" justify="center">
+      <v-row v-if="cartIsEmpty" class="mt-5 mb-5" justify="center">
         Cart is empty
       </v-row>
-      <CartItem
-        v-for="product in cartProductList"
-        v-else
-        :key="product.id"
-        :product="product"
-      />
+      <v-row v-else class="mt-5 mb-5" justify="end">
+        <v-btn
+          text
+          color="red"
+          small
+          data-testid="clearCartButton"
+          @click="clearCart"
+          >clear cart</v-btn
+        >
+        <CartItem
+          v-for="product in cartProductList"
+          :key="product.id"
+          :product="product"
+        />
+      </v-row>
       <v-btn
         data-testid="checkoutButton"
         block
-        class="white--text"
+        class="white--text pa-0"
         elevation="0"
         color="#42A5F5"
       >
@@ -42,7 +51,7 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropOptions } from 'vue';
+import Vue from 'vue';
 import CartItem from '@/components/cart-item.vue';
 import { GlobalTypes } from '@/types/global-types';
 
@@ -50,20 +59,20 @@ export default Vue.extend({
   components: {
     CartItem,
   },
-  props: {
-    cartProductList: {
-      type: Array,
-      default: () => [],
-    } as PropOptions<Array<GlobalTypes.Product>>,
-  },
   computed: {
     cartIsEmpty(): boolean {
-      return !this.$cart.hasProduct();
+      return this.cartProductList.length === 0;
+    },
+    cartProductList(): GlobalTypes.Product[] {
+      return this.$cart.getState().productList;
     },
   },
   methods: {
     closeDrawer() {
       this.$emit('close');
+    },
+    clearCart() {
+      this.$cart.clearCart();
     },
   },
 });

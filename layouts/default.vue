@@ -41,7 +41,6 @@
         closeConditional: onCloseConditional,
       }"
       width="350"
-      :cart-product-list="productList"
       @close="toggleDrawer"
     />
     <nuxt />
@@ -70,7 +69,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import CartSideMenu from '@/components/cart-side-menu.vue';
-import { GlobalTypes } from '@/types/global-types';
 
 export default Vue.extend({
   name: 'Default',
@@ -80,9 +78,6 @@ export default Vue.extend({
   computed: {
     cartIsVisible(): boolean {
       return this.$cart.getState().open;
-    },
-    productList(): Array<GlobalTypes.Product> {
-      return this.$cart.getState().productList;
     },
   },
   methods: {
