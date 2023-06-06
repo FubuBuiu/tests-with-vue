@@ -5,15 +5,15 @@
         <v-row>
           <v-col cols="auto" class="ma-0 pr-0" align="left">
             <v-avatar class="rounded" size="95">
-              <v-img :src="itemImage" />
+              <v-img :src="product.image" />
             </v-avatar>
           </v-col>
           <v-col class="pl-2">
             <v-card class="pa-0" color="transparent" elevation="0" height="65">
               <v-row class="fill-height text-body-2">
-                <v-col>{{ itemTitle }}</v-col>
+                <v-col>{{ product.title }}</v-col>
                 <v-col class="pl-0 pb-0" align="right" cols="auto">
-                  {{ itemPrice }}$
+                  ${{ product.price }}
                 </v-col>
               </v-row>
             </v-card>
@@ -32,7 +32,7 @@
                   >
                     <v-icon color="black">mdi-minus</v-icon>
                   </v-btn>
-                  {{ itemQuantity }}
+                  {{ product.quantity }}
                   <v-btn
                     class="ma-0 ml-1"
                     x-small
@@ -69,44 +69,31 @@
 
 <script lang="ts">
 import Vue, { PropOptions } from 'vue';
-import { GlobalTypes } from '@/types/global-types';
+import { CartProduct } from '@/managers/CartManager';
 export default Vue.extend({
   props: {
     product: {
       type: Object,
       required: true,
-    } as PropOptions<GlobalTypes.Product>,
-  },
-  data() {
-    return {
-      itemTitle: undefined as string | undefined,
-      itemPrice: 0,
-      itemQuantity: 1,
-      itemImage: undefined as string | undefined,
-    };
+    } as PropOptions<CartProduct>,
+    positionInCart: {
+      type: Number,
+      required: true,
+    },
   },
   watch: {
-    itemQuantity() {
-      if (this.itemQuantity === 0) {
+    'product.quantity'(val) {
+      if (val === 0) {
         this.removeProduct();
       }
     },
   },
-  created() {
-    if (this.product !== undefined || Object.keys(this.product).length !== 0) {
-      this.itemTitle = this.product.title;
-      this.itemPrice = this.product.price;
-      this.itemImage = this.product.image;
-    }
-  },
   methods: {
     increaseQuantity() {
-      this.itemQuantity++;
+      this.$cart.increaseQuantity(this.positionInCart);
     },
     decreaseQuantity() {
-      if (this.itemQuantity > 0) {
-        this.itemQuantity--;
-      }
+      this.$cart.decreaseQuantity(this.positionInCart);
     },
     removeProduct() {
       this.$cart.removeProduct(this.product.id);

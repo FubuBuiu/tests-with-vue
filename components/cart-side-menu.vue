@@ -31,9 +31,10 @@
           >clear cart</v-btn
         >
         <CartItem
-          v-for="product in cartProductList"
+          v-for="(product, index) in cartProductList"
           :key="product.id"
           :product="product"
+          :position-in-cart="index"
         />
       </v-row>
       <v-btn

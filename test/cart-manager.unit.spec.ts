@@ -11,16 +11,19 @@ describe('CartManager', () => {
   });
 
   afterEach(() => {
+    manager.clearCart();
     server.shutdown();
   });
 
   test('should set cart open', () => {
-    const state = manager.open();
+    manager.open();
+    const state = manager.getState();
 
     expect(state.open).toBe(true);
   });
   test('should set cart closed', () => {
-    const state = manager.close();
+    manager.close();
+    const state = manager.getState();
 
     expect(state.open).toBe(false);
   });
@@ -44,15 +47,17 @@ describe('CartManager', () => {
   test('should add product to the cart only once', () => {
     const product = server.create('product').attrs;
 
-    const state = manager.addProduct(product);
+    manager.addProduct(product);
+    const state = manager.getState();
 
     expect(state.productList).toHaveLength(1);
   });
   test('should remove product from the cart', () => {
     const product = server.create('product').attrs;
 
-    const state = manager.addProduct(product);
+    manager.addProduct(product);
     manager.removeProduct(product.id);
+    const state = manager.getState();
 
     expect(state.productList).toHaveLength(0);
   });
@@ -82,5 +87,36 @@ describe('CartManager', () => {
     manager.addProduct(product);
 
     expect(manager.existProductInTheCart(product)).toBe(true);
+  });
+  test('should increase the quantity of the product', () => {
+    const product = server.create('product');
+    const state = manager.getState();
+
+    manager.addProduct(product);
+
+    expect(state.productList[0].quantity).toBe(1);
+    manager.increaseQuantity(0);
+    expect(state.productList[0].quantity).toBe(2);
+  });
+  test('should decrease the quantity of the product', () => {
+    const product = server.create('product');
+    const state = manager.getState();
+
+    manager.addProduct(product);
+
+    expect(state.productList[0].quantity).toBe(1);
+    manager.decreaseQuantity(0);
+    expect(state.productList[0].quantity).toBe(0);
+  });
+  test('should increase the quantity of the product when trying to add a product that already exists in the cart', () => {
+    const product = server.create('product').attrs;
+    const state = manager.getState();
+
+    manager.addProduct(product);
+    expect(state.productList).toHaveLength(1);
+    expect(state.productList[0].quantity).toBe(1);
+    manager.addProduct(product);
+    expect(state.productList).toHaveLength(1);
+    expect(state.productList[0].quantity).toBe(2);
   });
 });

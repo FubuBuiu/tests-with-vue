@@ -8,7 +8,7 @@ export default {
   },
 };
 
-interface CartProduct extends GlobalTypes.Product {
+export interface CartProduct extends GlobalTypes.Product {
   quantity: number;
 }
 
@@ -26,12 +26,10 @@ export class CartManager {
 
   open() {
     this.state.open = true;
-    return this.state;
   }
 
   close() {
     this.state.open = false;
-    return this.state;
   }
 
   getState() {
@@ -42,17 +40,24 @@ export class CartManager {
     return !!this.state.productList.find(({ id }) => product.id === id);
   }
 
-  addProduct(product: GlobalTypes.Product) {
-    // TODO Rever se realmente é necessário adicionar o atributo quantity quando adiciona um produto no carrinho
-    if (!this.existProductInTheCart(product)) {
-      const productAux = {
-        ...product,
-        quantity: 1,
-      };
-      this.state.productList.push(productAux);
-    }
+  increaseQuantity(index: number) {
+    this.state.productList[index].quantity++;
+  }
 
-    return this.state;
+  decreaseQuantity(index: number) {
+    this.state.productList[index].quantity--;
+  }
+
+  addProduct(product: GlobalTypes.Product) {
+    if (this.existProductInTheCart(product)) {
+      this.state.productList.find(({ id }) => product.id === id)!.quantity++;
+      return;
+    }
+    const productAux = {
+      ...product,
+      quantity: 1,
+    };
+    this.state.productList.push(productAux);
   }
 
   removeProduct(productId: string) {
