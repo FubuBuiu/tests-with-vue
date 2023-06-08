@@ -1,3 +1,4 @@
+import { expect } from '@jest/globals';
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vue from 'vue';
 import Vuetify from 'vuetify';

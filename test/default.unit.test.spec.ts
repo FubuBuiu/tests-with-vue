@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify';
+import { expect } from '@jest/globals';
 import { mount, createLocalVue } from '@vue/test-utils';
 import { CartManager } from '~/managers/CartManager';
 import CartSideMenu from '@/components/cart-side-menu.vue';

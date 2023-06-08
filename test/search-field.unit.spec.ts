@@ -1,4 +1,5 @@
 import { mount, createLocalVue } from '@vue/test-utils';
+import { expect } from '@jest/globals';
 import Vue from 'vue';
 import Vuetify from 'vuetify';
 import Search from '@/components/search-field.vue';

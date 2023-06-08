@@ -1,3 +1,4 @@
+import { expect } from '@jest/globals';
 import { CartManager } from '@/managers/CartManager';
 import { makeServer } from '~/miragejs/server';
 

@@ -1,3 +1,4 @@
+import { expect } from '@jest/globals';
 import { mount, createLocalVue } from '@vue/test-utils';
 import axios from 'axios';
 import Vue from 'vue';
