@@ -7,7 +7,6 @@
     "lib": ["ESNext", "ESNext.AsyncIterable", "DOM"],
     "esModuleInterop": true,
     "allowJs": true,
-    "sourceMap": true,
     "strict": true,
     "noEmit": true,
     "experimentalDecorators": true,
