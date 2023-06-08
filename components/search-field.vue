@@ -1,10 +1,15 @@
 <template>
   <div>
-    <v-form ref="form" v-model="valid" @submit.prevent="doSearch">
+    <v-form
+      ref="form"
+      v-model="valid"
+      data-testid="searchForm"
+      @submit.prevent="doSearch"
+    >
       <v-row justify="center">
         <v-container class="ma-0 pa-0 mt-5" style="width: 500px">
           <v-text-field
-            id="search-input"
+            id="searchInput"
             v-model="term"
             outlined
             dense

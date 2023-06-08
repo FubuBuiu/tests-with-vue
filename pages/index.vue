@@ -9,7 +9,7 @@
       </v-row>
       <v-container fluid style="padding-left: 70px">
         <v-row class="pa-0 ma-0" style="color: #424242">
-          <h2>Wrist Whatch</h2>
+          <h2>Wrist Watch</h2>
         </v-row>
         <v-row class="pa-0 ma-0" style="color: #757575">
           <h4 data-testid="totalProductQuantity">
@@ -22,7 +22,7 @@
       </v-row>
       <v-row v-else class="ma-0 pa-0" justify="center">
         <v-col v-for="product in list" :key="product.id" cols="auto">
-          <ProductCard :product="product" />
+          <ProductCard data-testid="productCard" :product="product" />
         </v-col>
       </v-row>
     </v-container>
@@ -63,7 +63,7 @@ export default Vue.extend({
     },
     totalProductQuantityLabel(): string {
       let label: string;
-      if (this.list.length <= 1) {
+      if (this.list.length === 1) {
         label = `${this.list.length} Product`;
       } else {
         label = `${this.list.length} Products`;
