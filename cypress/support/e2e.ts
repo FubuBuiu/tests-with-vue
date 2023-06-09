@@ -16,6 +16,21 @@
 // Import commands.js using ES2015 syntax:
 import './commands';
 
+// ----------For TypeScript to recognize new Cypress commands----------
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      /**
+       * Custom command to select DOM element by data-cy attribute.
+       * @example cy.dataCy('greeting')
+       */
+      getByTestId(value: string): Chainable<JQuery<HTMLElement>>;
+      addToCart(value: string | Array<number> | number): void;
+    }
+  }
+}
+// --------------------------------------------------------------------
+
 Cypress.on('window:before:load', (win) => {
   (win as any).handleFromCypress = function (request: any) {
     return fetch(request.url, {
