@@ -21,6 +21,7 @@
             small
             color="blue"
             style="transform: translateY(-50%)"
+            data-testid="addProductToCartButton"
             @click="addToCart"
           >
             <v-icon color="white" class="pa-0 ma-0"> mdi-cart-outline </v-icon>

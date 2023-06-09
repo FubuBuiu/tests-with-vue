@@ -5,6 +5,7 @@
     disable-resize-watcher
     temporary
     v-bind="$attrs"
+    data-testid="shoppingCart"
   >
     <v-container class="pl-8 pr-4">
       <v-row class="pt-3 pb-3">
@@ -35,6 +36,7 @@
           :key="product.id"
           :product="product"
           :position-in-cart="index"
+          data-testid="cartItem"
         />
       </v-row>
       <v-btn
