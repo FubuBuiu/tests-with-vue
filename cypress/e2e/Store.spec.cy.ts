@@ -19,7 +19,7 @@ context('Store', () => {
     cy.get('body').contains('Wrist Watch');
   });
 
-  context('Store > Shopping Cart', () => {
+  context.only('Store > Shopping Cart', () => {
     const quantity = 8;
 
     beforeEach(() => {
@@ -51,7 +51,7 @@ context('Store', () => {
     });
 
     it('should open shopping cart when product is added', () => {
-      cy.addToCart(2);
+      cy.addToCart({index:2});
 
       cy.getByTestId('shoppingCart').should(
         'have.class',
@@ -59,20 +59,20 @@ context('Store', () => {
       );
     });
 
-    it('should add first product to the cart', () => {
-      cy.addToCart(0);
+    it.only('should add first product to the cart', () => {
+      cy.addToCart({index:0});
 
       cy.getByTestId('cartItem').should('have.length', 1);
     });
 
-    it('should add 3 products to the cart', () => {
-      cy.addToCart([2, 4, 6]);
+    it.only('should add 3 products to the cart', () => {
+      cy.addToCart({indexes:[2, 4, 6]});
 
       cy.getByTestId('cartItem').should('have.length', 3);
     });
 
     it('should add all products to cart', () => {
-      cy.addToCart('all');
+      cy.addToCart({indexes: 'all'});
 
       cy.getByTestId('cartItem').should('have.length', quantity);
     });

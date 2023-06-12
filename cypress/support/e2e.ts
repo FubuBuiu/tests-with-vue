@@ -16,6 +16,11 @@
 // Import commands.js using ES2015 syntax:
 import './commands';
 
+interface AddToCartType{
+  index?:number;
+  indexes?: Array<number> | string;
+}
+
 // ----------For TypeScript to recognize new Cypress commands----------
 declare global {
   namespace Cypress {
@@ -25,7 +30,7 @@ declare global {
        * @example cy.dataCy('greeting')
        */
       getByTestId(value: string): Chainable<JQuery<HTMLElement>>;
-      addToCart(value: string | Array<number> | number): void;
+      addToCart(value: AddToCartType): void;
     }
   }
 }

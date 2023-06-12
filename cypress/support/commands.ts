@@ -33,11 +33,11 @@ Cypress.Commands.add('addToCart', (mode) => {
     });
   }
 
-  if (Array.isArray(mode)) {
-    addByIndexes(mode);
-  } else if (typeof mode === 'number') {
-    addByIndex(mode);
-  } else if (typeof mode === 'string' && mode === 'all') {
+  if (!!mode.indexes && Array.isArray(mode.indexes)) {
+    addByIndexes(mode.indexes);
+  } else if (mode.index !== undefined && typeof mode.index === 'number') {
+    addByIndex(mode.index);
+  } else if (!!mode.indexes && mode.indexes === 'all') {
     addAll();
   } else {
     throw new Error(
