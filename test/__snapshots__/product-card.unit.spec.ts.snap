@@ -53,6 +53,7 @@ exports[`ProductCard component - unit should match snapshot 1`] = `
       >
         <button
           class="v-btn v-btn--is-elevated v-btn--fab v-btn--has-bg v-btn--round theme--light v-size--small blue"
+          data-testid="addProductToCartButton"
           dense=""
           style="transform: translateY(-50%);"
           type="button"
