@@ -32,7 +32,9 @@
                   >
                     <v-icon color="black">mdi-minus</v-icon>
                   </v-btn>
-                  {{ product.quantity }}
+                  <label data-testid="productQuantityText">
+                    {{ product.quantity }}
+                  </label>
                   <v-btn
                     class="ma-0 ml-1"
                     x-small

@@ -19,7 +19,7 @@ context('Store', () => {
     cy.get('body').contains('Wrist Watch');
   });
 
-  context.only('Store > Shopping Cart', () => {
+  context('Store > Shopping Cart', () => {
     const quantity = 8;
 
     beforeEach(() => {
@@ -50,6 +50,12 @@ context('Store', () => {
         .and('not.have.class', 'v-navigation-drawer--open');
     });
 
+    it('should display "Cart is empty" message when there are no products', () => {
+      cy.getByTestId('cartButton').click();
+      cy.getByTestId('cartItem').should('have.length',0);
+      cy.getByTestId('shoppingCart').contains('Cart is empty');
+    });
+
     it('should open shopping cart when product is added', () => {
       cy.addToCart({index:2});
 
@@ -59,13 +65,13 @@ context('Store', () => {
       );
     });
 
-    it.only('should add first product to the cart', () => {
+    it('should add first product to the cart', () => {
       cy.addToCart({index:0});
 
       cy.getByTestId('cartItem').should('have.length', 1);
     });
 
-    it.only('should add 3 products to the cart', () => {
+    it('should add 3 products to the cart', () => {
       cy.addToCart({indexes:[2, 4, 6]});
 
       cy.getByTestId('cartItem').should('have.length', 3);
@@ -75,6 +81,75 @@ context('Store', () => {
       cy.addToCart({indexes: 'all'});
 
       cy.getByTestId('cartItem').should('have.length', quantity);
+    });
+
+    it('should increase quantity of product when plus button is clicked', () => {
+      cy.addToCart({index: 3});
+
+      cy.getByTestId('cartItem').eq(0).as('item')
+
+      cy.get('@item').find('[data-testid="productQuantityText"]').contains(1);
+
+      cy.getByTestId('plusButton').click();
+
+      cy.get('@item').contains(2);
+
+    });
+
+    it('should dencrease quantity of product when minus button is clicked', () => {
+      cy.addToCart({index: 3});
+
+      cy.getByTestId('cartItem').eq(0).as('item');
+
+      cy.getByTestId('plusButton').click();
+
+      cy.get('@item').find('[data-testid="productQuantityText"]').contains(2);
+
+      cy.getByTestId('minusButton').click();
+
+      cy.get('@item').find('[data-testid="productQuantityText"]').contains(1);
+
+    });
+
+    it('should remove a product when qunatity is 1 and minus button is clicked', () => {
+      cy.addToCart({index: 3});
+
+      cy.getByTestId('cartItem').as('cartItems');
+
+      cy.get('@cartItems').eq(0).as('item');
+
+      cy.get('@item').find('[data-testid="productQuantityText"]').contains(1);
+
+      cy.getByTestId('minusButton').click();
+
+      cy.get('@cartItems').should('not.have.length');
+
+      cy.getByTestId('shoppingCart').contains('Cart is empty');
+
+    });
+
+    it('should remove a product from cart', () => {
+      cy.addToCart({index: 1});
+
+      cy.getByTestId('cartItem').as('cartItems');
+
+      cy.get('@cartItems').should('have.length', 1);
+
+      cy.get('@cartItems').eq(0).find('[data-testid="removeProductButton"]').click();
+
+      cy.get('@cartItems').should('have.length',0);
+    });
+
+    it('should remove all products from cart', () => {
+      cy.addToCart({indexes: [1,5,7]});
+
+      cy.getByTestId('cartItem').as('cartItems');
+
+      cy.get('@cartItems').should('have.length', 3);
+
+      cy.getByTestId('clearCartButton').click();
+
+      cy.get('@cartItems').should('have.length',0);
     });
   });
 
