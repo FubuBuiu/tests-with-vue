@@ -112,6 +112,13 @@ describe('Cart', () => {
 
     expect(clearCartButton.exists()).toBe(true);
   });
+  test('should hide "Clear cart" button when there is no product', () => {
+    const { wrapper } = mountCartSideMenu();
+
+    const clearCartButton = wrapper.find('[data-testid="clearCartButton"]');
+
+    expect(clearCartButton.exists()).toBe(false);
+  });
   test('should clear cart when "CLEAR CART" button gets cliked', async () => {
     const { wrapper, cartManager } = mountCartSideMenu(2);
 
