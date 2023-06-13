@@ -29,7 +29,7 @@ describe('Search - unit', () => {
       vuetify,
     });
     const term = 'termo para busca';
-    const input = wrapper.getComponent(Search).find('[id="search-input"]');
+    const input = wrapper.getComponent(Search).find('[id="searchInput"]');
     await input.setValue(term);
     await wrapper.find('form').trigger('submit');
     expect(wrapper.emitted().doSearch).toBeTruthy();
@@ -42,7 +42,7 @@ describe('Search - unit', () => {
       vuetify,
     });
     const term = 'termo para busca';
-    const input = wrapper.getComponent(Search).find('[id="search-input"]');
+    const input = wrapper.getComponent(Search).find('[id="searchInput"]');
     await input.setValue(term);
     await input.setValue('');
 

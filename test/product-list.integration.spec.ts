@@ -108,7 +108,7 @@ describe('ProductList - integration', () => {
 
     // Act
     const search = wrapper.findComponent(Search);
-    search.find('[id="search-input"]').setValue('relógio');
+    await search.find('[id="searchInput"]').setValue('relógio');
     await search.find('form').trigger('submit');
     // Assert
     const cards = wrapper.findAllComponents(ProductCard);
@@ -123,9 +123,9 @@ describe('ProductList - integration', () => {
 
     // Act
     const search = wrapper.findComponent(Search);
-    search.find('[id="search-input"]').setValue('relógio');
+    await search.find('[id="searchInput"]').setValue('relógio');
     await search.find('form').trigger('submit');
-    search.find('[id="search-input"]').setValue('');
+    await search.find('[id="searchInput"]').setValue('');
     await search.find('form').trigger('submit');
     // Assert
     const cards = wrapper.findAllComponents(ProductCard);
