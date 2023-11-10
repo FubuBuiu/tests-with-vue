@@ -34,10 +34,13 @@ import Vue from 'vue';
 import ProductCard from '@/components/product-card.vue';
 import SearchField from '@/components/search-field.vue';
 import { GlobalTypes } from '@/types/global-types';
+import mockProducts from '@/mock/products.json';
 
 export interface Search {
   term: string;
 }
+
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 export default Vue.extend({
   components: {
@@ -74,7 +77,13 @@ export default Vue.extend({
   async created() {
     try {
       this.loading = true;
-      this.products = (await this.$axios.get('/api/products')).data.products;
+      if (isDevelopment) {
+        this.products = (await this.$axios.get('/api/products')).data.products;
+      } else {
+        this.products = await new Promise(function (resolve) {
+          setTimeout(() => resolve(mockProducts), 3000);
+        });
+      }
       this.errorMessage = undefined;
     } catch (error) {
       this.errorMessage = 'Error getting product list';
