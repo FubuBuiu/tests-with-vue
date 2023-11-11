@@ -24,6 +24,7 @@ describe('ProductList - integration', () => {
     localVue = createLocalVue();
     vuetify = new Vuetify();
     server = makeServer({ environment: 'test' });
+    process.env.NODE_ENV = 'development';
   });
   afterEach(() => {
     server.shutdown();

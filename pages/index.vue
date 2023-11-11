@@ -40,7 +40,7 @@ export interface Search {
   term: string;
 }
 
-const isDevelopment = process.env.NODE_ENV === 'development';
+// const isDevelopment = process.env.NODE_ENV === 'development';
 
 export default Vue.extend({
   components: {
@@ -53,6 +53,7 @@ export default Vue.extend({
       products: [] as GlobalTypes.Product[],
       errorMessage: undefined as string | undefined,
       searchTerm: undefined as string | undefined,
+      isDevelopment: process.env.NODE_ENV === 'development',
     };
   },
   computed: {
@@ -77,7 +78,7 @@ export default Vue.extend({
   async created() {
     try {
       this.loading = true;
-      if (isDevelopment) {
+      if (this.isDevelopment) {
         this.products = (await this.$axios.get('/api/products')).data.products;
       } else {
         this.products = await new Promise(function (resolve) {
